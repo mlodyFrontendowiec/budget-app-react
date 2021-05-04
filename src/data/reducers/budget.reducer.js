@@ -6,13 +6,12 @@ import {
   BUDGET_GET_FAILURE,
   BUDGETED_CATEGORIES_GET,
   BUDGETED_CATEGORIES_GET_REQUEST,
-  BUDGETED_CATEGORIES_REQUEST,
-  BUDGETED_CATEGORIES_SUCCESS,
-  BUDGETED_CATEGORIES_FAILURE,
+  BUDGETED_CATEGORIES_GET_SUCCESS,
+  BUDGETED_CATEGORIES_GET_FAILURE,
 } from "data/constans";
 
 const initialState = {
-  loadingState: {},
+  loadingState: null,
   budget: {},
   budgetedCategories: [],
 };
@@ -30,6 +29,7 @@ const budget = (state = initialState, { type, payload }) => {
       };
     case BUDGET_GET_SUCCESS:
       delete newLoadingState.BUDGET_GET_REQUEST;
+
       return {
         ...state,
         budget: payload,
@@ -50,14 +50,15 @@ const budget = (state = initialState, { type, payload }) => {
           [type]: LOADING_STATES.LOADING,
         },
       };
-    case BUDGETED_CATEGORIES_SUCCESS:
+    case BUDGETED_CATEGORIES_GET_SUCCESS:
       delete newLoadingState.BUDGETED_CATEGORIES_GET_REQUEST;
+
       return {
         ...state,
         budgetedCategories: payload,
         loadingState: newLoadingState,
       };
-    case BUDGETED_CATEGORIES_FAILURE:
+    case BUDGETED_CATEGORIES_GET_FAILURE:
       delete newLoadingState.BUDGETED_CATEGORIES_GET_REQUEST;
       return {
         ...state,

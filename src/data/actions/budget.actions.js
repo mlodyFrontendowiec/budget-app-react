@@ -6,6 +6,7 @@ export const fetchBudget = (id) => {
 
   return { type: BUDGET_GET, promise };
 };
+
 export const fetchBudgetedCategories = (id) => {
   const promise = API.budget.fetchBudgetedCategories(id);
 

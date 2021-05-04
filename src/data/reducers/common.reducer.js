@@ -11,8 +11,9 @@ const initialState = {
   allCategories: [],
 };
 
-const budget = (state = initialState, { type, payload }) => {
+const common = (state = initialState, { type, payload }) => {
   const newLoadingState = { ...state.loadingState };
+  console.log(type);
   switch (type) {
     case ALL_CATEGORIES_GET_REQUEST:
       return {
@@ -40,4 +41,4 @@ const budget = (state = initialState, { type, payload }) => {
       return state;
   }
 };
-export default budget;
+export default common;
