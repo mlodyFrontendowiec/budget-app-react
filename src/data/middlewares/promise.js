@@ -1,5 +1,3 @@
-import { BUDGET_GET_REQUEST } from "data/constans";
-
 export default function promiseMiddleware() {
   return function (next) {
     return function (action) {
@@ -21,7 +19,6 @@ export default function promiseMiddleware() {
           return next({ type: SUCCESS, payload: data, ...rest });
         })
         .catch((err) => {
-          console.log(err);
           return next({ type: FAILURE, err, ...rest });
         });
     };
