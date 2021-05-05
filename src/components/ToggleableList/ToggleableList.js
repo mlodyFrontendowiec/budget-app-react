@@ -13,14 +13,17 @@ const ToggleableList = ({ items }) => {
   console.log(selectedItem);
   return (
     <>
-      {items.map((item) => (
-        <Item
-          key={item.id}
-          item={item}
-          onClickHandler={setSelectedItem}
-          isActive={selectedItem === item.id}
-        />
-      ))}
+      {items.map((item) => {
+        console.log(typeof setSelectedItem);
+        return (
+          <Item
+            key={item.id}
+            item={item}
+            onClickHandler={setSelectedItem}
+            isActive={selectedItem === item.id}
+          />
+        );
+      })}
     </>
   );
 };

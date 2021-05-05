@@ -17,7 +17,7 @@ const BudgetCategoryList = ({ budgetCategories, allCategories }) => {
     ([parentName, categories]) => ({
       id: parentName,
       Trigger: ({ onClick }) => (
-        <ParentCategory name={parentName} onClick={onClick(parentName)} />
+        <ParentCategory name={parentName} onClick={() => onClick(parentName)} />
       ),
       children: categories.map((budgetedCategory) => {
         const { name } = allCategories.find(
