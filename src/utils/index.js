@@ -5,3 +5,9 @@ export const formatCurrency = (value) => {
     currency: "PLN",
   }).format(number);
 };
+
+export const formatDate = (string) => {
+  const date = new Date(string);
+
+  return new Intl.DateTimeFormat("pl").format(date);
+};

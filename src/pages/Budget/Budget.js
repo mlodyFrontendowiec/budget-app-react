@@ -10,6 +10,7 @@ import { Grid } from "./Budget.css";
 import { useMemo } from "react";
 import { LoadingIndicator } from "components";
 import BudgetCategoryList from "./components/BudgetCategoryList";
+import BudgetTransactionList from "./components/BudgetTransactionList";
 
 const Budget = ({
   commonState,
@@ -37,7 +38,10 @@ const Budget = ({
       <section>
         {isLoaded ? <BudgetCategoryList /> : <LoadingIndicator />}
       </section>
-      <section> {isLoaded ? "Transaction list" : <LoadingIndicator />}</section>
+      <section>
+        {" "}
+        {isLoaded ? <BudgetTransactionList /> : <LoadingIndicator />}
+      </section>
     </Grid>
   );
 };
