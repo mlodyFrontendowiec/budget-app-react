@@ -4,7 +4,6 @@ import { formatCurrency } from "utils";
 import { CategoryAmount, CategoryItem as Root } from "./BudgetCategoryList.css";
 
 const CategoryItem = ({ name, item, transactions }) => {
-  console.log(transactions);
   const categoryTransactions = transactions.filter(
     (transaction) => transaction.categoryId === item.id
   );

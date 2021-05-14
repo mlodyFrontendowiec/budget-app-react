@@ -1,6 +1,6 @@
 import { selectParentCategory } from "data/actions/budget.actions";
 import { groupBy } from "lodash";
-import React from "react";
+import React, { useMemo } from "react";
 import { connect } from "react-redux";
 import { formatCurrency, formatDate } from "utils";
 
@@ -9,12 +9,23 @@ import { List, ListItem } from "./BudgetTransactionList.css";
 const BudgetTransactionList = ({
   transactions,
   allCategories,
+  budgetedCategories,
   selectedParentCategoryId,
 }) => {
-  const filteredTransactionsBySelectedParentCategory = (() => {
+  const filteredTransactionsBySelectedParentCategory = useMemo(() => {
     if (typeof selectedParentCategoryId === "undefined") {
       return transactions;
     }
+    if (selectedParentCategoryId === null) {
+      return transactions.filter((transaction) => {
+        const hasBudgetCategory = budgetedCategories.some(
+          (budgetedCategory) =>
+            budgetedCategory.categoryId === transaction.categoryId
+        );
+        return !hasBudgetCategory;
+      });
+    }
+
     return transactions.filter((transaction) => {
       try {
         const category = allCategories.find((category) => {
@@ -28,13 +39,18 @@ const BudgetTransactionList = ({
         return false;
       }
     });
-  })();
+  }, [
+    allCategories,
+    budgetedCategories,
+    selectedParentCategoryId,
+    transactions,
+  ]);
 
-  console.log(filteredTransactionsBySelectedParentCategory);
-
-  const groupedTransactions = groupBy(
-    filteredTransactionsBySelectedParentCategory,
-    (transaction) => new Date(transaction.date).getUTCDate()
+  const groupedTransactions = useMemo(
+    groupBy(filteredTransactionsBySelectedParentCategory, (transaction) =>
+      new Date(transaction.date).getUTCDate()
+    ),
+    [filteredTransactionsBySelectedParentCategory]
   );
 
   return (
@@ -44,7 +60,6 @@ const BudgetTransactionList = ({
           <ul>
             {transactions.map((transaction) => (
               <ListItem>
-                {transaction.description}
                 <div>{transaction.description}</div>
                 <div>{formatCurrency(transaction.amount)}</div>
                 <div>{formatDate(transaction.date)}</div>
@@ -68,6 +83,7 @@ const BudgetTransactionList = ({
 
 export default connect((state) => ({
   transactions: state.budget.budget.transactions,
+  budgetedCategories: state.budget.budgetedCategories,
   allCategories: state.common.allCategories,
   selectedParentCategoryId: state.budget.selectedParentCategory,
 }))(BudgetTransactionList);

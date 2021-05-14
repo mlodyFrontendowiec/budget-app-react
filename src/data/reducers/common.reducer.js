@@ -13,7 +13,6 @@ const initialState = {
 
 const common = (state = initialState, { type, payload }) => {
   const newLoadingState = { ...state.loadingState };
-  console.log(type);
   switch (type) {
     case ALL_CATEGORIES_GET_REQUEST:
       return {
