@@ -1,15 +1,42 @@
+import { selectParentCategory } from "data/actions/budget.actions";
 import { groupBy } from "lodash";
 import React from "react";
 import { connect } from "react-redux";
 import { formatCurrency, formatDate } from "utils";
-import { Category } from "../BudgetCategoryList/BudgetCategoryList.css";
+
 import { List, ListItem } from "./BudgetTransactionList.css";
 
-const BudgetTransactionList = ({ transactions, allCategories }) => {
-  const groupedTransactions = groupBy(transactions, (transaction) =>
-    new Date(transaction.date).getUTCDate()
+const BudgetTransactionList = ({
+  transactions,
+  allCategories,
+  selectedParentCategoryId,
+}) => {
+  const filteredTransactionsBySelectedParentCategory = (() => {
+    if (typeof selectedParentCategoryId === "undefined") {
+      return transactions;
+    }
+    return transactions.filter((transaction) => {
+      try {
+        const category = allCategories.find((category) => {
+          return category.id === transaction.categoryId;
+        });
+
+        const parentCategoryName = category.parentCategory.name;
+
+        return parentCategoryName === selectedParentCategoryId;
+      } catch (err) {
+        return false;
+      }
+    });
+  })();
+
+  console.log(filteredTransactionsBySelectedParentCategory);
+
+  const groupedTransactions = groupBy(
+    filteredTransactionsBySelectedParentCategory,
+    (transaction) => new Date(transaction.date).getUTCDate()
   );
-  console.log(groupedTransactions);
+
   return (
     <List>
       {Object.entries(groupedTransactions).map(([key, transactions]) => (
@@ -42,4 +69,5 @@ const BudgetTransactionList = ({ transactions, allCategories }) => {
 export default connect((state) => ({
   transactions: state.budget.budget.transactions,
   allCategories: state.common.allCategories,
+  selectedParentCategoryId: state.budget.selectedParentCategory,
 }))(BudgetTransactionList);

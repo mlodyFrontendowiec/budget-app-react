@@ -15,7 +15,6 @@ export default function promiseMiddleware() {
       return promise
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           return next({ type: SUCCESS, payload: data, ...rest });
         })
         .catch((err) => {

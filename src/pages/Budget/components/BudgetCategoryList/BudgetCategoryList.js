@@ -7,6 +7,7 @@ import ParentCategory from "./ParentCategory";
 import { useTranslation } from "react-i18next";
 import "styled-components/macro";
 import { selectParentCategory } from "data/actions/budget.actions";
+
 const BudgetCategoryList = ({
   budgetCategories,
   allCategories,
@@ -20,6 +21,10 @@ const BudgetCategoryList = ({
       allCategories.find((category) => category.id === item.categoryId)
         .parentCategory.name
   );
+
+  const handleClearParentCategorySelect = () => {
+    selectParentCategory();
+  };
 
   const listItems = Object.entries(budgetedCategoriesByParent).map(
     ([parentName, categories]) => ({
@@ -94,7 +99,11 @@ const BudgetCategoryList = ({
           border-bottom: 5px solid ${({ theme }) => theme.colors.gray.light};
         `}
       >
-        <ParentCategory name={budget.name} amount={restToSpent} />
+        <ParentCategory
+          name={budget.name}
+          amount={restToSpent}
+          onClick={handleClearParentCategorySelect}
+        />
       </div>
       <ToggleableList items={listItems} />
       <div

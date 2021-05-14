@@ -10,11 +10,9 @@ const Item = ({ item, onClickHandler, isActive }) => (
 
 const ToggleableList = ({ items }) => {
   const [selectedItem, setSelectedItem] = useState();
-  console.log(selectedItem);
   return (
     <>
       {items.map((item) => {
-        console.log(typeof setSelectedItem);
         return (
           <Item
             key={item.id}
